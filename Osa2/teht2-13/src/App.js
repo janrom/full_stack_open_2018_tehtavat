@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import Countries from './components/Countries'
+import FilteredCountries from './components/FilteredCountries'
+import FilteredCountry from './components/FilteredCountry'
 
 
 class App extends React.Component {
@@ -22,25 +23,33 @@ class App extends React.Component {
       })
   }
 
-  // suodata kaikista maista input arvon mukaisesti
+  // suodata kaikista maista input-arvon mukaisesti
   handleFilteredCountries(event) {
     const filtered = this.state.countries.filter( country => country.name.toLowerCase().includes(event.target.value) )
     
     this.setState({ filteredCountries: filtered })    
   }
-
-  setFlagUrl(url) {
-    this.setState({ flagUrl: url })
+  
+  // suodata maa nimellä, klikkaamalla jo filteröidystä listasta
+  countryClickListener = (name) => {
+    const filtered = this.state.filteredCountries.filter( country => country.name === name)    
+    
+    this.setState({ filteredCountries: filtered })    
   }
   
   render() {
+    // valitse näytetäänkö yhden maan tiedot vai filtteröity nimilista maista
+    const countries = this.state.filteredCountries.length === 1 ? 
+      <FilteredCountry filteredCountry={this.state.filteredCountries[0]} /> :
+      <FilteredCountries filteredCountries={this.state.filteredCountries} countryClickListener={this.countryClickListener.bind(this)} />
+
     return (
       <div>
         <div>
           find countries: <input onChange={this.handleFilteredCountries.bind(this)} />
         </div>
         <div>          
-          <Countries filteredCountries={this.state.filteredCountries} />
+          {countries}
         </div>
       </div>
     );

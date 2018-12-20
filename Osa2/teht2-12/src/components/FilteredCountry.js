@@ -4,15 +4,14 @@ import React from 'react'
 const FilteredCountry = (props) => {
   return (
     <div>
-      <div>
-        capital: {props.filteredCountries.capital}
-      </div>
-      <div>
-        population: {props.filteredCountries.population}
-      </div>
-      <div>
-        <img src={props.filteredCountries.flag} alt="flag" />
-      </div>
+        <h1>{props.filteredCountries[0].name}</h1>
+        <p>
+          capital: {props.filteredCountries[0].capital}
+        </p>        
+        <p>
+          population: {props.filteredCountries[0].population}
+        </p>        
+        <img src={props.filteredCountries[0].flag} alt="flag" width="25%" height="25%" />
     </div>    
   )  
 }
