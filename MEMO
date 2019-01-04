@@ -1,0 +1,237 @@
+Kurssin osoite: https://fullstackopen.github.io/
+
+# AJANKÄYTTÖ:
+Osa2: 2, 1, 
+
+
+# TODO:
+
+
+
+# MUISTIINPANOT:
+
+WEB-SOVELLUSKEHITYKSEN SÄÄNTÖ NUMERO 1: Pidä selaimen developer-konsoli aina auki.
+  Välilehdistä tulee olla auki nimenomaan Console jollei ole erityistä syytä käyttää jotain muuta välilehteä.
+
+Tapahtumankäsittelijöinä olevia Javascript-funktioita kutsutaan callback- eli takaisinkutsufunktioiksi
+
+Document Object Model eli DOM on ohjelmointirajapinta eli API, joka mahdollistaa selaimessa esitettävien web-sivuja vastaavien elementtipuiden muokkaamisen ohjelmallisesti.
+
+
+# NPM
+
+npx create-react-app nimi // luo uuden 'nimi'-nimisen projektin
+
+npm start // tarjoilee projektin tiedostoja paikallisesti, osoitteessa localhost:3000
+
+## NPM paketit
+npm install json-server --save
+npm install axios --save
+
+## NPM SKRIPTIT (lisää package.json:n "scripts"-blokin loppuun)
+"server": "json-server -p3001 db.json" // tarjoilee db.json-tiedoston osoitteessa localhost:3001/<db.json:n juurinimi>
+
+# DEBUGGAUS
+https://fullstackopen.github.io/osa1/#react-sovellusten-debuggaus
+
+
+# JAVASCRIPT
+
+## THIS
+Javascriptissa this:n arvo määrittyy sen mukaan miten metodia on kutsuttu
+
+jos funktiota kutsutaan pistenotaatiolla (dot notation) tai sulkunotaatiolla (bracket notation), kutsuvasta objektista tulee this.
+  jos em. notaatiota ei käytetä, this viittaa globaaliin objectiin (window selaimissa)
+ 
+this:n voi välittää funktiolle bind, apply ja call -funkioilla
+  jos arvoksi tulee null tai undefined, käytä em. funktioita
+
+
+## LUOKKA VS FUNKTIO
+komponentin voi määritellä luokaksi (OOP-tyyli) tai funktioksi (funktionaalinen ohjelmointi)
+
+jos komponentilla on useita eri tiloja => tee siitä luokka
+tällaiset komponentit kannattaa sijoittaa mahdollisimman ylös komponenttihierarkiassa, eli mahd. lähelle HTML:n body-elementtiä tai hierarkian root-elementtiä (esim. eka div)
+
+
+## MUUTTUJAT
+let: block-tason muuttujan (alkaen ECMAScript 2015)
+
+const: muuttumaton arvo (alkaen ECMAScript 2015)
+
+var: function-tason muuttujia (näkyvyys funktion sisällä tai globaali jos tekee funktion ulkopuolella)
+
+
+## OBJEKTI
+object prototype:
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  var you = new Person('You', 24); 
+
+
+## FUNKTIO
+const Joku = () => {
+  //koodi
+  return (
+    //koodi
+  )
+}
+
+this määritellään funktion kutsun yhteydessä
+
+funktioita voi määritellä sisäkkäin. kannattaa käyttää silloin kun funktio liittyvät vain ja ainoastaan toisiinsa eikä käytetä muualla
+
+funktion kutsussa olevat parametrit löytyvät AINA arguments-taulukosta, funktion sisällä. ts arguments-taulukko on funktioihin sisäänrakennettu
+
+funktioilla on aina arguments-niminen taulukko, jossa on kaikki funktiokutsussa annetut parametrit:
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
+  
+...args-parametri ottaa vastaan kaikki funktiokutsussa annetut parametrit, esim:
+function add(...args) {
+  var sum = 0;
+  for (let a of args) {
+    sum += a;
+  }
+  return sum;
+}
+add(1,2,3,4,5,6);
+
+...args voi ottaa vastaan myös loput yli jääneistä funktiokutsun parametreista:
+function add(first, second, ...args) {
+  var sum = 0;
+  sum += first;
+  sum += second;
+  // lisää loput
+  for (let a of args) {
+    sum += a;
+  }
+  return sum;
+}
+add(1,2,3,4,5,6);
+
+
+## NUOLIFUNKTIO
+yksi lauseke:
+const Joku = () => x // sama kuin: const Joku = () => return x
+
+useampi lauseke:
+const Joku = () => {
+  return x
+}
+
+this määritellään nuolifunktion määrittelyn yhteydessä
+
+
+## CURRYING
+termi, jota käytetään kun funktio palauttaa funktion
+
+
+## PROTOTYYPPI
+prototyyppiin lisätyt ominaisuudet (properties) jaetaan kaikkiin prototyypistä tehtyjen objektien kesken, esim:
+  function Person(first, last) {
+  this.first = first;
+  this.last = last;
+  }
+  Person.prototype.fullName = function() {
+    return this.first + ' ' + this.last;
+  };
+  Person.prototype.fullNameReversed = function() {
+    return this.last + ', ' + this.first;
+  };
+  
+  fullName ja fullNameReversed -funktioita ei ole määritelty suoraan Person-objectiin vaan prototyyppiin, jossa ne jaetaan kaikkien Person-funktio-objektien (function   
+  object) kesken.
+  Jos lisättäisiin suoraan Person-objektiin niin aina kun luodaan uusi Person-funktio-objekti luotaisiin lisäksi kaksi uuttaa funktio-objektia fullName ja             
+  fullNameReversed
+
+
+## TERNARY / CONDITIONAL EXPRESSION: 
+  var allowed = (age > 18) ? 'yes' : 'no';
+
+## ARRAY:
+  var a = ['dog', 'cat', 'hen'];
+
+## FOR:
+  for (var i = 0; i < a.length; i++) {
+    // Do something with a[i]
+  }
+
+## FOREACH
+  ['dog', 'cat', 'hen'].forEach(function(currentValue, index, array) {
+    // Do something with currentValue or array[index]
+  });
+  
+## FOR OF
+ES2015 introduced the more concise for...of loop for iterable objects such as arrays:
+
+for (const currentValue of a) {
+  // Do something with currentValue
+}
+
+
+#####################################################################################################
+# REACT
+
+## KOMPONENTTI 
+dokumentaatio: https://reactjs.org/docs/react-component.html
+
+componentDidMount() kutsutaan heti, kun komponentti on ladattu. täällä voi tehdä esim. DOM:n alustuksia tai kutsua setState:a
+
+
+### PROPS-PARAMETRI
+parameterejä voi välittää komponenttien välillä propsien avulla https://reactjs.org/docs/components-and-props.html
+
+  esimerkki:
+  komponentti Hello ja props-parametri:
+    const Hello = (props) => {
+      return (
+        <div>
+          <p>Hello {props.name}</p>
+        </div>
+      )
+    }  
+  komponentin käyttäminen ja parametrin antaminen:
+    const App = () => {
+      return (
+        <div>
+          <h1>Greetings</h1>
+          <Hello name="Arto" />
+          <Hello name="Pekka" />
+        </div>
+      )
+    }
+  
+
+### SETSTATE 
+käytetään Reactin komponentin tilan muuttamiseen
+
+syntaksi (nuolifunktiona)
+  nollaa = () => this.setState({ value: 0 }) 
+
+  class App extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            value: 10
+        }
+     ...
+    
+komponentin this.state -tilaa ei saa muuttaa suoraan vaan aina setState-funktion kautta
+
+setState-funktiota kutsutaan asynkroonisesti
+
+
+#####################################################################################################
+# BABEL
+Babelin avulla voi käyttää selainten tukemaa ES-standardia uudempia ominaisuuksia. jos ominaisuus ei ole standardissa, tarkistaa tukeeko babel jo sitä
+
+
+# LUETTAVAA
+
+## FUNKTIOT: lue Functions-osio: https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Functions
+
+## CLOSURES: lue Closures-osio: https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Closures
+
+## KIRJAT: https://github.com/getify/You-Dont-Know-JS
