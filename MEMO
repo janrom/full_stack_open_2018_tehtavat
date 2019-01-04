@@ -183,7 +183,7 @@ componentDidMount() kutsutaan heti, kun komponentti on ladattu. täällä voi te
 ### PROPS-PARAMETRI
 parameterejä voi välittää komponenttien välillä propsien avulla https://reactjs.org/docs/components-and-props.html
 
-  esimerkki:
+esimerkki arvo parametrina:
   komponentti Hello ja props-parametri:
     const Hello = (props) => {
       return (
@@ -202,6 +202,15 @@ parameterejä voi välittää komponenttien välillä propsien avulla https://re
         </div>
       )
     }
+
+esimerkki parametrillinen funktio parametrina:
+  komponentti:
+    var x = true
+    const Joku = (props) =>
+      <button onClick={() => props.funktioX(x)}>Poista</button> // huomaa '() =>', ilman tuota 'props.funktioX(x)' suoritetaan heti. nyt '() =>' suoritetaan heti ja se palauttaa funktion 'props.funktioX(x)'
+
+  komponentin kaytto:
+    <Joku funktioX={this.funktioX}/> // jos tulee null tai undefined, liita 'this' bind-funktiolla: <Joku funktioX={this.funktioX.bind(this)} />
   
 
 ### SETSTATE 
