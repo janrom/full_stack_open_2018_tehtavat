@@ -31,8 +31,28 @@ npm install axios --save
 ## NPM SKRIPTIT (lisää package.json:n "scripts"-blokin loppuun)
 "server": "json-server -p3001 db.json" // tarjoilee db.json-tiedoston osoitteessa localhost:3001/<db.json:n juurinimi>
 
+## TUOTANTO
+npm run build // tekee projektista optimoidun tuotantoversion
+
+"proxy": "http://localhost:3001" // jos tuotantopalvelin kaytossa ja haluaa kayttaa myos testipalvelinta, lisaa testipalvelimen osoite frontendin package.json "proxy"-kenttaan
+
+
 # DEBUGGAUS
 https://fullstackopen.github.io/osa1/#react-sovellusten-debuggaus
+
+Virheilmoitus: Access to XMLHttpRequest at 'http://localhost:3001/notes' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Merkitys: Estetty resurssien pyytaminen muista domaineista, kuin siita domainista, josta ensimmainen resurssi on tarjoiltu.
+Korjaus: Lisaa CORS-middleware npm-projektiin: npm install cors
+
+
+# HEROKU
+
+## UUSI PROJEKTI
+echo 'web: node index.js' >> Procfile // kertoo Herokulle kuinka sovellus kaynnistetaan. luodaan projektin juureen
+heroku login // kirjaudu tilille
+heruko create <nimi> --reagion eu // luo uuden projektin ja git-repon sille
+git add -A, git commit -m "Initiate app", git push heroku master // deployataan sovellus
+https://<nimi>.com // testaa selaimella
 
 
 # JAVASCRIPT

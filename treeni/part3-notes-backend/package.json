@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "watch": "node_modules/.bin/nodemon index.js"  
+    "watch": "node_modules/.bin/nodemon index.js"
   },
   "author": "Matti Luukkainen",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.16.2"
   },
   "devDependencies": {
