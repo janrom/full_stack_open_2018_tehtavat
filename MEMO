@@ -36,23 +36,57 @@ npm run build // tekee projektista optimoidun tuotantoversion
 
 "proxy": "http://localhost:3001" // jos tuotantopalvelin kaytossa ja haluaa kayttaa myos testipalvelinta, lisaa testipalvelimen osoite frontendin package.json "proxy"-kenttaan
 
+## ESTA SELAIMEN AUTOMAATTINEN KAYNNISTYS KOMENNOLLA 'NPM START'
+create file .env in the same directory where your package.json lives
+insert this line BROWSER=none to the file and save it
+run nom start and web browser will not be opening anymore
+lahde: https://github.com/facebook/create-react-app/issues/873#issuecomment-373158830
+
+
+# GIT
+
+## ADD
+git add -A stages all changes
+git add . stages new files and modifications, without deletions
+git add -u stages modifications and deletions, without new files
+
+## BRANCH
+luo uusi branch:
+	git checkout -b branchin-nimi
+lisaa muutokset remote branchiin
+	git add -A
+	git commit -m "viesti"
+	git push branchin-nimi
+poista branch remotesta
+	git push origin :branching-nimi // tyhja push siis poistaa remoten branchin
+
+
+# HEROKU
+
+## UUSI NODE-PROJEKTI
+1. luo Procfile tiedosto projektin juureen:
+	echo 'web: node index.js' >> Procfile
+2. muuta porttimaaritys index.js:
+	const PORT = process.env.PORT || 3001
+3. heroku create nimi --region eu
+4. git remote -v // tarkista remotet
+5. git push heroku master
+
+## SEURAA LOGIA
+heroku logs -t
+
 
 # DEBUGGAUS
+
 https://fullstackopen.github.io/osa1/#react-sovellusten-debuggaus
 
 Virheilmoitus: Access to XMLHttpRequest at 'http://localhost:3001/notes' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 Merkitys: Estetty resurssien pyytaminen muista domaineista, kuin siita domainista, josta ensimmainen resurssi on tarjoiltu.
 Korjaus: Lisaa CORS-middleware npm-projektiin: npm install cors
 
-
-# HEROKU
-
-## UUSI PROJEKTI
-echo 'web: node index.js' >> Procfile // kertoo Herokulle kuinka sovellus kaynnistetaan. luodaan projektin juureen
-heroku login // kirjaudu tilille
-heruko create <nimi> --reagion eu // luo uuden projektin ja git-repon sille
-git add -A, git commit -m "Initiate app", git push heroku master // deployataan sovellus
-https://<nimi>.com // testaa selaimella
+Virheilmoitus: ENOSPC: System limit for number of file watchers reached
+Merkitys: /proc/sys/fs/inotify/max_user_watches oleva tiedoston tarkkailijoiden (file watchers) maara ylitetty
+Korjaus: muokkaa tiedostoa /etc/sysctl.conf lisaamalla loppuun rivi fs.inotify.max_user_watches=524288. luku on maksimi tarkkailijoiden maara Linuxilla. Kaynnista terminaali ja VSCode uudelleen.
 
 
 # JAVASCRIPT
