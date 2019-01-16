@@ -1,13 +1,34 @@
 Kurssin osoite: https://fullstackopen.github.io/
 
+#####################################################################################################
+# LUETTAVAA
+
+## FUNKTIOT: lue Functions-osio: https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Functions
+
+## CLOSURES: lue Closures-osio: https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Closures
+
+## KIRJAT: https://github.com/getify/You-Dont-Know-JS
+
+
+#####################################################################################################
 # AJANKÄYTTÖ:
 Osa2: 2, 1, 8, 8, 8, 8, 8
 
 
-# TODO:
+#####################################################################################################
+# TEHTAVAT
+
+## PUHELINLUETTELO
+kehitys
+	kaynnista frontend: npm start
+	kaynnista backend: npm run watch
+	frontendin package.json lisatty "proxy": "http://localhost:3001", joka ohjaa kasittelemattomat requestit localhostin porttiin 3001 eli kehityspalvelimelle
+
+tuotanto
+	herokun tililla janrom-puhelinluettelo
 
 
-
+#####################################################################################################
 # MUISTIINPANOT:
 
 WEB-SOVELLUSKEHITYKSEN SÄÄNTÖ NUMERO 1: Pidä selaimen developer-konsoli aina auki.
@@ -18,6 +39,7 @@ Tapahtumankäsittelijöinä olevia Javascript-funktioita kutsutaan callback- eli
 Document Object Model eli DOM on ohjelmointirajapinta eli API, joka mahdollistaa selaimessa esitettävien web-sivuja vastaavien elementtipuiden muokkaamisen ohjelmallisesti.
 
 
+#####################################################################################################
 # NPM
 
 npx create-react-app nimi // luo uuden 'nimi'-nimisen projektin
@@ -43,6 +65,7 @@ run nom start and web browser will not be opening anymore
 lahde: https://github.com/facebook/create-react-app/issues/873#issuecomment-373158830
 
 
+#####################################################################################################
 # GIT
 
 ## ADD
@@ -61,6 +84,7 @@ poista branch remotesta
 	git push origin :branching-nimi // tyhja push siis poistaa remoten branchin
 
 
+#####################################################################################################
 # HEROKU
 
 ## UUSI NODE-PROJEKTI
@@ -72,23 +96,41 @@ poista branch remotesta
 4. git remote -v // tarkista remotet
 5. git push heroku master
 
-## SEURAA LOGIA
-heroku logs -t
+## KOMENTOJA
+heroku login	// kirjaudu tilille
+heroku info	// nayta herokusovelluksen tiedot
+heroku logs -t	// seuraa herokusovellusen logeja
 
 
+#####################################################################################################
 # DEBUGGAUS
+React-sovellusten debuggaus:
+	https://fullstackopen.github.io/osa1/#react-sovellusten-debuggaus
 
-https://fullstackopen.github.io/osa1/#react-sovellusten-debuggaus
+tulosta objektin tila:
+	console.log
 
-Virheilmoitus: Access to XMLHttpRequest at 'http://localhost:3001/notes' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-Merkitys: Estetty resurssien pyytaminen muista domaineista, kuin siita domainista, josta ensimmainen resurssi on tarjoiltu.
-Korjaus: Lisaa CORS-middleware npm-projektiin: npm install cors
+keskeyttaa koodin suorittamisen debugger-kutsun kohdalle ja avaa dev toolsin Sources-tabin debugger-kutsun kohdalta.
+Console-tabissa paasy ohjelman sen hetkiseen tilaan, esim. console.loggailla ko. tilassa olevia objekteja
+	debugger
 
-Virheilmoitus: ENOSPC: System limit for number of file watchers reached
-Merkitys: /proc/sys/fs/inotify/max_user_watches oleva tiedoston tarkkailijoiden (file watchers) maara ylitetty
-Korjaus: muokkaa tiedostoa /etc/sysctl.conf lisaamalla loppuun rivi fs.inotify.max_user_watches=524288. luku on maksimi tarkkailijoiden maara Linuxilla. Kaynnista terminaali ja VSCode uudelleen.
+## VIRHEILMOITUKSIA JA NIIDEN KORJAUKSIA
+Virheilmoitus: 
+	Access to XMLHttpRequest at 'http://localhost:3001/notes' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Merkitys: 
+	Estetty resurssien pyytaminen muista domaineista, kuin siita domainista, josta ensimmainen resurssi on tarjoiltu.
+Korjaus: 
+	Lisaa CORS-middleware npm-projektiin: npm install cors
+
+Virheilmoitus: 
+	ENOSPC: System limit for number of file watchers reached
+Merkitys: 
+	/proc/sys/fs/inotify/max_user_watches oleva tiedoston tarkkailijoiden (file watchers) maara ylitetty
+Korjaus: 
+	muokkaa tiedostoa /etc/sysctl.conf lisaamalla loppuun rivi fs.inotify.max_user_watches=524288. luku on maksimi tarkkailijoiden maara Linuxilla. Kaynnista terminaali ja VSCode uudelleen.
 
 
+#####################################################################################################
 # JAVASCRIPT
 
 ## THIS
@@ -291,10 +333,45 @@ setState-funktiota kutsutaan asynkroonisesti
 Babelin avulla voi käyttää selainten tukemaa ES-standardia uudempia ominaisuuksia. jos ominaisuus ei ole standardissa, tarkistaa tukeeko babel jo sitä
 
 
-# LUETTAVAA
+#####################################################################################################
+# NOSQL-TIETOKANNAT (NoSQL, Not Only SQL, NewSQL)
+- Voidaan jakaa neljään eri luokkaan:
+1. avain-arvotietokantoihin (engl. key value databases)
+	- esim. Redis
+	- hyvä cachetukseen
+2. dokumenttitietokantoihin (engl. document databases)
+	- esim. MongoDB
+	- Dokumentti: 
+		- muodostuu avain-arvo-pareista, jossa arvona voi olla primitiiviarvon lisäksi olio tai taulukko
+		- vastaa relaatiotietokantaan tallennettua tietuetta eli taulun riviä
+	- Kokoelma:
+		- suunnilleen sama merkitys, kuin taululla relaatiotietokannoissa. 
+		- Kokoelma muodostuu dokumenteista. 
+			- Jokainen dokumentti voi olla rekenteeltaan erilainen. 
+		- Kokoelma ei käytä skeemaa vaan skeemaa vastaavat määrittelyt ja tehtävät ovat sovelluksen vastuulla
+3. saraketietokantoihin (engl. columnar databases)
+	- esim. Cassandra
+	- hyvä analysointiin
+	- tallennetaan sarakkeittain omiin tiedoihinsa
+		- sarakkeen tiedon haku nopeaa, koska sarakkeet eroteltu
+			- esim. jos halutaan vain kaikkien etunimet, on haku nopeaa koska tieto on omassa sarakkeessa eli eroteltu omaan tiedostoon
+4. verkkotietokantoihin (engl. graph databases)
+	- esim. Neo4J
+	- hyvä mallintamaan entiteettien (esim. henkilöiden) verkostoa ja entiteettien välisisiä suhteita
+	- tietorakenteena on verkko (graph), joka muodostuu entiteettejä kuvaavista solmuista (node) ja niiden välisiä suhteita kuvaavista kaarista (edge)
+		- solmuilla ja kaarilla voi olla attribuutteja
 
-## FUNKTIOT: lue Functions-osio: https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Functions
+- suosituimmat tietokannat tyypeittäin sekä tietoa niistä: https://db-engines.com/en/ranking
 
-## CLOSURES: lue Closures-osio: https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript#Closures
+- Sovelluksessa voi olla käytössä monta erilaista tietokantaa. 
+	- Tietokannalle valitaan sopivin noSQL-tekniikka, eikä kaikki tietokannat käytä samaa tekniikkaa, esim. cachetettava data tallennetaan Redisiin ja dokumentit MongoDB:hen
 
-## KIRJAT: https://github.com/getify/You-Dont-Know-JS
+- CAP-teoreema
+	- Consistency: tarkoittaa lineaarisuutta. prossessin A pitää olla päättynyt ennen kuin prosessi B voi alkaa. Prosessi B ei saa tietää prosessin A olemassaolosta
+	- Availability: pyyntöihin vastaamisessa ei saa olla pitkiä viiveitä. Järjestelmän on vastattava, jos sillä on siihen tilaisuus
+	- Partition tolerance: järjestelmän tulee toimia vaikka esim. palvelinkoneiden välinen yhteys katkeaa
+	- Skaalautuvuuteen liittyvä termi, jota käytetään, kun tietokanta hajautetaan eri palvelinkoneiden välille
+	- Käytännössä, jos järjestelmä on skaalattu vähintään kahdelle palvelimelle, vain 2/3 CAP-teoreeman määritelmistä voi täyttyä
+		- Todellisuudessa yksi määritelmistä voi olla prioriteettina ja kaksi muuta seuraa perässä, esim. pankkijärjestelmissä Consistenty on tärkein
+
+
