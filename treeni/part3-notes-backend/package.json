@@ -11,9 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "mongoose": "^5.4.4"
   },
   "devDependencies": {
-    "nodemon": "^1.14.11"
+    "nodemon": "^1.18.9"
   }
 }
