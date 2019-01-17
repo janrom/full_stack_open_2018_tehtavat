@@ -58,11 +58,20 @@ npm run build // tekee projektista optimoidun tuotantoversion
 
 "proxy": "http://localhost:3001" // jos tuotantopalvelin kaytossa ja haluaa kayttaa myos testipalvelinta, lisaa testipalvelimen osoite frontendin package.json "proxy"-kenttaan
 
-## ESTA SELAIMEN AUTOMAATTINEN KAYNNISTYS KOMENNOLLA 'NPM START'
+## ESTÄ SELAIMEN AUTOMAATTINEN KÄYNNISTYS KOMENNOLLA 'NPM START'
 create file .env in the same directory where your package.json lives
 insert this line BROWSER=none to the file and save it
 run nom start and web browser will not be opening anymore
 lahde: https://github.com/facebook/create-react-app/issues/873#issuecomment-373158830
+
+## STANDARD
+https://github.com/standard/standard
+
+tarkista koodista koodaus- ja tyylivirheet:
+	standard
+
+korjaa virheet:
+	standard --fix
 
 
 #####################################################################################################
@@ -373,5 +382,4 @@ Babelin avulla voi käyttää selainten tukemaa ES-standardia uudempia ominaisuu
 	- Skaalautuvuuteen liittyvä termi, jota käytetään, kun tietokanta hajautetaan eri palvelinkoneiden välille
 	- Käytännössä, jos järjestelmä on skaalattu vähintään kahdelle palvelimelle, vain 2/3 CAP-teoreeman määritelmistä voi täyttyä
 		- Todellisuudessa yksi määritelmistä voi olla prioriteettina ja kaksi muuta seuraa perässä, esim. pankkijärjestelmissä Consistenty on tärkein
-
 
