@@ -25,7 +25,15 @@ app.get('/api/notes', (req, res) => {
   Note
     .find({})
     .then(notes => {
-      res.json(notes.map(formatNote))
+      if (notes) {
+        res.json(notes.map(formatNote))
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      response.status(400).send({ error: 'malformatted request' })
     })
 })
 
@@ -33,14 +41,17 @@ app.get('/api/notes/:id', (req, res) => {
   Note
     .findById(req.params.id)
     .then(note => {
-      res.json(formatNote(note))
+      if (note) {
+        res.json(formatNote(note))
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).send({ error: 'malformatted id' })
     })
 })
-
-const generateId = () => {
-  const maxId = notes.length > 0 ? notes.map(n => n.id).sort().reverse()[0] : 1
-  return maxId + 1
-}
 
 app.post('/api/notes', (request, response) => {
   const body = request.body
@@ -60,13 +71,41 @@ app.post('/api/notes', (request, response) => {
     .then(savedNote => {
       response.json(formatNote(savedNote))
     })
+    .catch(err => {
+      console.log(err)
+      response.status(500).end()
+    })
 })
 
 app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
+  Note
+    .findByIdAndRemove(request.params.id)
+    .then(resut => {
+      response.status(204).end()
+    })
+    .catch(err => {
+      console.log(err)
+      response.status(400).send({ error: 'malformatted id' })
+    })
+})
 
-  response.status(204).end()
+app.put('/api/notes/:id', (req, res) => {
+  const body = req.body
+
+  const note = {
+    content: body.content,
+    important: body.important
+  }
+
+  Note
+    .findByIdAndUpdate(req.params.id, note, { new: true })
+    .then(updatedNote => {
+      res.json(formatNote(updatedNote))
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 const PORT = process.env.PORT || 3001
