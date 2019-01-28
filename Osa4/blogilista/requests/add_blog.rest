@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 content-type: application/json
 
 {
-  "title": "Noden salat",
+  "title": "Noden salat 3",
   "author": "Janne Romppanen",
   "url": "http://localhost:3003",
   "likes": 1
