@@ -12,30 +12,12 @@ const url = 'mongodb://' + usr + ':' + pass + '@ds157834.mlab.com:57834/notes'
 // open connection to database
 mongoose.connect(url)
 
-// create a model. schema is defined in second parameter. 
+// create a model. schema is defined in second parameter.
 const Note = mongoose.model('Note', {
   content: String,
   date: Date,
   important: Boolean
 })
-
-// create a document from the model
-const note = new Note({
-  content: 'testi',
-  date: new Date(),
-  important: true
-})
-
-// save the document into collection notes
-/*
-note
-  .save()
-  .then(response => {
-    console.log('note saved', note)
-    // close connection to database
-    mongoose.connection.close()
-  })
-*/
 
 // get all documents from database
 Note
