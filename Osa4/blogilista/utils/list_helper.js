@@ -32,9 +32,31 @@ const mostBlogs = (blogs) => {
   return most
 }
 
+/**
+ * Find author with most likes and return author's name and number of likes
+ * @param {object} blogs 
+ */
+const mostLikes = (blogs) => {
+  let most = { author: '', likes: 0 }
+
+  blogs.reduce((acc, cur) => {
+    const result = blogs.filter(blog => blog.author.indexOf(cur.author) > -1)    
+    const likes = result.reduce((acc, cur) => {
+      return acc + cur.likes
+    }, 0)
+    if (likes > most.likes && result[0].author != most.author) {
+      most.author = result[0].author
+      most.likes = likes
+    }    
+  }, blogs[0])
+
+  return most
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
