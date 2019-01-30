@@ -14,41 +14,22 @@ const favoriteBlog = (blogs) => {
   }, blogs[0])  
 }
 
+/**
+ * Find author with most blogs and return the author's name and number of blogs
+ * @param {object} blogs 
+ */
 const mostBlogs = (blogs) => {
-  let authors = []
+  let most = { author: '', blogs: 0 }
 
-  // push authors to array and count their blog occurences
   blogs.reduce((acc, cur) => {
-    let result = authors.filter(a => a.author.indexOf(cur.author) > -1)    
-    
-    if (result.length > 0) {
-      result.map((a) => {
-        if (a => a.author.indexOf(cur.author) > -1) {
-          a.blogs++  
-        }
-      })
-    } else {
-      authors.push({
-        author: cur.author,
-        blogs: 1
-      })
+    const result = blogs.filter(blog => blog.author.indexOf(cur.author) > -1)
+    if (most.blogs < result.length) {
+      most.author = result[0].author
+      most.blogs = result.length      
     }
-
-    return authors
   }, blogs[0])
-    
-  // sort author with most blog occurences into first index
-  authors.sort((a,b) => {
-    if (a.blogs > b.blogs) {
-      return -1
-    }
-    if (a.blogs < b.blogs) {
-      return 1
-    }
-    return 0
-  })  
-    
-  return authors[0]
+  
+  return most
 }
 
 module.exports = {
