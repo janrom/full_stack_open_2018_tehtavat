@@ -53,10 +53,20 @@ const mostLikes = (blogs) => {
   return most
 }
 
+const missingLikes = (blogs) => {
+  let total = blogs.reduce((acc, cur) => {
+    let likes = cur.likes ? cur.likes : 0
+    return acc + likes
+  }, 0)
+
+  return total
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
+  missingLikes
 }

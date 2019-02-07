@@ -4,8 +4,9 @@
   "description": "Full Stack Open 2018 osan 4 tehtävä",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
-    "start": "nodemon index.js --port 3003",
+    "start": "cross-env NODE_ENV=production nodex index.js",
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose && standard",
     "lint": "eslint ."
   },
   "repository": {
