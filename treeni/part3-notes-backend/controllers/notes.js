@@ -10,20 +10,9 @@ const formatNote = (note) => {
   }
 }
 
-notesRouter.get('/', (req, res) => {
-  Note
-    .find({})
-    .then(notes => {
-      if (notes) {
-        res.json(notes.map(formatNote))
-      } else {
-        res.status(404).end()
-      }
-    })
-    .catch(err => {
-      console.log(err)
-      res.status(400).send({ error: 'malformatted request' })
-    })
+notesRouter.get('/', async (req, res) => {
+  const notes = await Note.find({})
+  res.json(notes.map(formatNote))
 })
 
 notesRouter.get('/:id', (req, res) => {
@@ -42,29 +31,26 @@ notesRouter.get('/:id', (req, res) => {
     })
 })
 
-notesRouter.post('/', (request, response) => {
-  const body = request.body
+notesRouter.post('/', async (request, response) => {
+  try {
+    const body = request.body
 
-  if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' })
+    if (body.content === undefined) {
+      return response.status(400).json({ error: 'content missing' })
+    }
+
+    const note = new Note({
+      content: body.content,
+      important: body.important || false,
+      date: new Date()
+    })
+
+    const savedNote = await note.save()
+    response.json(formatNote(savedNote))
+  } catch(ex) {
+    console.log(ex)
+    response.status(500).json({ error: 'something went wrong...' })
   }
-
-  const note = new Note({
-    content: body.content,
-    important: body.important || false,
-    date: new Date()
-  })
-
-  note
-    .save()
-    .then(formatNote) // call formatNote with result from .save() as parameter and return formatted json as Promise (.then always returns Promise)
-    .then(savedAndFormattedNote => {
-      response.json(savedAndFormattedNote)
-    })
-    .catch(err => {
-      console.log(err)
-      response.status(500).end()
-    })
 })
 
 notesRouter.put('/:id', (req, res) => {
@@ -89,7 +75,11 @@ notesRouter.put('/:id', (req, res) => {
 notesRouter.delete('/:id', (request, response) => {
   Note
     .findByIdAndRemove(request.params.id)
-    .then(response.status(204).end())
+    .then(result => {
+      if (result) {
+        response.status(204).end()
+      }
+    })
     .catch(err => {
       console.log(err)
       response.status(400).send({ error: 'malformatted id' })

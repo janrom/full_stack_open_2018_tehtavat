@@ -1,0 +1,10 @@
+{"_id":{"$oid":"5c3f54fa2468ca458bc6f75a"},"content":"HTML on helppoa","date":{"$date":"2019-01-16T15:59:54.382Z"},"important":true,"__v":0}
+{"_id":{"$oid":"5c3f67fe9f9ab3527b42a003"},"content":"important testi","date":{"$date":"2019-01-16T17:21:02.167Z"},"important":false,"__v":0}
+{"_id":{"$oid":"5c3f6863061c0552b176f878"},"content":"testi","date":{"$date":"2019-01-16T17:22:43.906Z"},"important":true,"__v":0}
+{"_id":{"$oid":"5c404f20f6bd6a2786900eb4"},"content":"testi","date":{"$date":"2019-01-17T09:47:12.460Z"},"important":true,"__v":0}
+{"_id":{"$oid":"5c40a11002b5184b08a1b3b4"},"content":"noten sisaltoa","important":false,"date":{"$date":"2019-01-17T15:36:48.026Z"},"__v":0}
+{"_id":{"$oid":"5c482041f64d1714ec8a4d2e"},"content":"VS Code REST API test","important":true,"date":{"$date":"2019-01-23T08:05:21.079Z"},"__v":0}
+{"_id":{"$oid":"5c48205ff64d1714ec8a4d2f"},"content":"Promise test","important":true,"date":{"$date":"2019-01-23T08:05:51.543Z"},"__v":0}
+{"_id":{"$oid":"5c48230756a2ff2826265ee9"},"content":"Promise test 2","important":false,"date":{"$date":"2019-01-23T08:17:11.949Z"},"__v":0}
+{"_id":{"$oid":"5c4ecf97764db61436cc31de"},"content":"asdf","important":true,"date":{"$date":"2019-01-28T09:47:03.018Z"},"__v":0}
+{"_id":{"$oid":"5c4ed07fc730da00049a5d04"},"content":"heroku testi","important":true,"date":{"$date":"2019-01-28T09:50:55.562Z"},"__v":0}
