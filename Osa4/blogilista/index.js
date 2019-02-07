@@ -14,7 +14,7 @@ app.use(utils)
 app.use('/api/blogs', blogsRouter) // routes, using /api/blogs as base url
 
 mongoose
-  .connect(process.env.DB_URL, { "useNewUrlParser": true })
+  .connect(process.env.MONGODB_URL, { "useNewUrlParser": true })
   .then(() => console.log('connected to database'))
   .catch(err => {
     console.log(err)    
