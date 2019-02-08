@@ -1,32 +1,47 @@
 const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
+const { clearDb, seedDb, getAllBlogsFromDb } = require('./test_helper')
 
-describe('HTTP tests', () => {
-  test('blocks are returned', async () => {
-    await api
-      .get('/api/blogs')
-      .expect(200)
-      .expect('Content-Type', /json/)
+describe('test HTTP methods on /api/blogs route', () => {
+  beforeEach(async () => {
+    await clearDb()
+    const seedResult = await seedDb()
+    expect(seedResult).not.toBe(null)
   })
 
-  test('new blog is added', async () => {
+  test('GET /api/blogs returns all blogs', async () => {
+    const initialBlogs = await getAllBlogsFromDb()
+
+    const response = await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.length).toBe(initialBlogs.length)
+  })
+
+  test('POST /api/blogs creates new blog with valid values', async () => {
+    const initialBlogs = await getAllBlogsFromDb()
+
     const newBlog = {
-      'title': 'test blog',
-      'author': 'supertest post request',
-      'url': 'http://localhost',
-      'likes': 10
+      title: 'new blog',
+      author: 'jest',
+      url: 'http://localhost',
+      likes: 1
     }
 
     await api
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)
-      .expect('Content-Type', /application\/json/)      
+      .expect('Content-Type', /application\/json/)
 
-    const response = await api.get('/api/blogs')
-    const blogTitles = response.body.map(r => r.title)
-    expect(blogTitles).toContainEqual(newBlog.title)
+    const blogsAfterOperation = await getAllBlogsFromDb()
+    const blogTitles = blogsAfterOperation.map(b => b.title)
+    expect(blogTitles).toContain(newBlog.title)
+
+    expect(blogsAfterOperation.length).toBe(initialBlogs.length + 1)
   })
 })
 
@@ -71,7 +86,7 @@ describe('blog consistency tests', () => {
   })
 
   test('if url-field is missing, response status is 400 Bad request', async () => {
-    const newBlogWithNoTitle = {
+    const newBlogWithNoUrl = {
       'title': 'test missing url',
       'author': 'jest',
       'likes': 1
@@ -79,7 +94,7 @@ describe('blog consistency tests', () => {
 
     await api
       .post('/api/blogs')
-      .send(newBlogWithNoTitle)
+      .send(newBlogWithNoUrl)
       .expect(400)
       .expect('Content-Type', /application\/json/)
   })
