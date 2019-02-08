@@ -140,6 +140,14 @@ Korjaus:
 
 
 #####################################################################################################
+# TESTAUS
+
+## JEST
+testaa yksittaista testia tai testiryhmaa:
+	npx jest -t 'test-nimi tai describe-nimi' --verbose
+
+
+#####################################################################################################
 # JAVASCRIPT
 
 ## THIS
