@@ -15,7 +15,7 @@ blogsRouter.get('/', async (request, response) => {
       response(500).end()
     })
 
-  response.json(blogs)
+  return response.json(blogs)
 })
 
 /**
@@ -45,7 +45,7 @@ blogsRouter.post('/', async (request, response) => {
       return response.status(500).json({ error: 'failed to save blog' })
     })
 
-  response.status(201).json(savedBlogDocument)
+  return response.status(201).json(savedBlogDocument)
 })
 
 /**
@@ -62,7 +62,18 @@ blogsRouter.delete('/:id', async (request, response) => {
       return response(400).json({ error: 'incorrect id' })
     })
 
-  response.status(204).end()
+  return response.status(204).end()
+})
+
+blogsRouter.put('/:id', async (request, response) => {
+  const udpatedBlog = await Blog
+    .findOneAndUpdate(request.params.id, request.body)
+    .catch(err => {
+      console.log(err)
+      return response.status(400).end()
+    })
+
+  return response.status(200).json(udpatedBlog)
 })
 
 module.exports = blogsRouter

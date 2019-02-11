@@ -5,7 +5,7 @@ const { clearDb, seedDb, getAllBlogsFromDb } = require('./test_helper')
 
 describe('test HTTP methods on /api/blogs route', () => {
   beforeEach(async () => {
-    await clearDb()
+    await clearDb()    
     const seedResult = await seedDb()
     expect(seedResult).not.toBe(null)
   })
@@ -56,12 +56,33 @@ describe('test HTTP methods on /api/blogs route', () => {
 
     expect(blogsAfterOperation).not.toContain(initialBlogs[0]._id)
   })
+
+  test('PUT /api/blogs/:id updates existing blog with matching id', async () => {
+    const initialBlogs = await getAllBlogsFromDb()
+    const id = initialBlogs[0]._id
+
+    const updatedBlog = {
+      _id: id,
+      title: 'initial blog 1 updated',
+      author: 'jest updated',
+      url: 'http://localhost/api/blogs/updated',
+      likes: 2
+    }
+
+    await api
+      .put(`/api/blogs/${id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)    
+
+    const blogsAfterOperation = await getAllBlogsFromDb()
+    expect(blogsAfterOperation).toContainEqual(expect.objectContaining(updatedBlog))
+  })
 })
 
 describe('blog consistency tests', () => {
   beforeEach(async () => {
-    const Blog = require('../models/blog')
-    await Blog.remove({})
+    await clearDb()
   })
 
   test('if likes-field is missing, default likes-field with zero likes is added', async () => {

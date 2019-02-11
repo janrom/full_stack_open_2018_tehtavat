@@ -16,7 +16,7 @@ const initialBlogs = [
 ]
 
 const clearDb = async () => {
-  await Blog.remove({})
+  await Blog.deleteMany({})
 }
 
 /**
