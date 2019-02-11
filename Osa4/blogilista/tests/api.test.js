@@ -43,6 +43,19 @@ describe('test HTTP methods on /api/blogs route', () => {
 
     expect(blogsAfterOperation.length).toBe(initialBlogs.length + 1)
   })
+
+  test('DELETE /api/blogs/:id removes blog with matching id', async () => {
+    const initialBlogs = await getAllBlogsFromDb()
+    let id = initialBlogs[0]._id
+
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(204)
+
+    const blogsAfterOperation = await getAllBlogsFromDb()
+
+    expect(blogsAfterOperation).not.toContain(initialBlogs[0]._id)
+  })
 })
 
 describe('blog consistency tests', () => {
@@ -65,8 +78,7 @@ describe('blog consistency tests', () => {
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
-    const likes = response.body
-    expect(likes).toContainEqual(expect.objectContaining(
+    expect(response.body).toContainEqual(expect.objectContaining(
       { 'likes': expect.any(Number) }
     ))
   })

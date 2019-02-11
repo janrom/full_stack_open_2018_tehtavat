@@ -1,6 +1,12 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
+/**
+ * Get all blogs from database
+ * @param {object} request - Express request object. Not used
+ * @param {object} response - Express request object
+ * @returns {JSON} - All blogs
+ */
 blogsRouter.get('/', (request, response) => {
   Blog
     .find({})
@@ -12,7 +18,8 @@ blogsRouter.get('/', (request, response) => {
 /**
  * Save array of blog(s) to database
  * @param {object} request - request.body holds single blog or array of blogs to be saved in database
- * @param {object} response - HTTP response with JSON, holding created blog documents or error message
+ * @param {object} response - Express response object
+ * @returns {JSON} -  HTTP response with JSON, holding created blog documents or error message 
  */
 blogsRouter.post('/', (request, response) => {
   // handle only arrays. push single blog objects to array
@@ -47,6 +54,17 @@ blogsRouter.post('/', (request, response) => {
   })
 
   response.status(201).json(createdBlogs)
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog
+    .findByIdAndRemove(request.params.id)
+    .catch(err => {
+      console.log(err)
+      return response(400).json({ error: 'incorrect id' })
+    })
+
+  response.status(204).end()
 })
 
 module.exports = blogsRouter

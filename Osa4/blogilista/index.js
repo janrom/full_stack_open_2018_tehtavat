@@ -18,7 +18,7 @@ mongoose
 app.use(cors())
 app.use(bodyParser.json())
 app.use(utils)
-app.use('/api/blogs', blogsRouter) // routes, using /api/blogs as base url
+app.use('/api/blogs', blogsRouter) // set /api/blogs as base url. blogRouter handles all routes
 
 const server = http.createServer(app)
 
