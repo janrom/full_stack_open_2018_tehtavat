@@ -10,4 +10,11 @@ const logger = (req, res, next) => {
   next()
 }
 
-module.exports = logger
+const unknownRoute = (req, res) => {
+  return res.status(400).json({ error: 'unknown endpoint' })
+}
+
+module.exports = {
+  logger,
+  unknownRoute
+}

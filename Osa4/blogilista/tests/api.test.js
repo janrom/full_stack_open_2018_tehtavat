@@ -1,12 +1,12 @@
 const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
-const { clearDb, seedDb, getAllBlogsFromDb } = require('./test_helper')
+const { deleteBlogsInDb, deleteUsersInDb, seedBlogs, getAllBlogsFromDb } = require('./test_helper')
 
 describe('test HTTP methods on /api/blogs route', () => {
   beforeEach(async () => {
-    await clearDb()    
-    const seedResult = await seedDb()
+    await deleteBlogsInDb()
+    const seedResult = await seedBlogs()
     expect(seedResult).not.toBe(null)
   })
 
@@ -82,7 +82,7 @@ describe('test HTTP methods on /api/blogs route', () => {
 
 describe('blog consistency tests', () => {
   beforeEach(async () => {
-    await clearDb()
+    await deleteBlogsInDb()
   })
 
   test('if likes-field is missing, default likes-field with zero likes is added', async () => {
@@ -130,6 +130,86 @@ describe('blog consistency tests', () => {
       .send(newBlogWithNoUrl)
       .expect(400)
       .expect('Content-Type', /application\/json/)
+  })
+})
+
+describe.only('user creation tests', async () => {
+  beforeEach(async () => {
+    await deleteUsersInDb()
+  })
+
+  test('user creation fails with password length of 2', async () => {
+    const newUser = {
+      username: 'fail',
+      password: 'aa',
+      name: 'Password test',
+      adult: true
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('user creation success with password length of 3', async () => {
+    const newUser = {
+      username: 'success',
+      password: 'aaa',
+      name: 'Password test',
+      adult: true
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+
+    const response = await api.get('/api/users')
+    const usernames = response.body.map(r => r.username)
+
+    expect(usernames).toContain(newUser.username)
+  })
+
+  test('user creation fails with non-unique username', async () => {
+    const newUser = {
+      username: 'user',
+      password: 'aaa',
+      name: 'Password test',
+      adult: true
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+
+    const identicalUser = {
+      username: 'user',
+      password: 'aaa',
+      name: 'Password test',
+      adult: true
+    }
+
+    await api
+      .post('/api/users')
+      .send(identicalUser)
+      .expect(400)
+  })
+
+  test('if adult field is missing, default field is added with value true', async () => {
+    const newUser = {
+      username: 'user',
+      password: 'aaa',
+      name: 'Password test'
+    }
+
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+
+    expect(response.body.isAdult).toBe(true)
   })
 })
 

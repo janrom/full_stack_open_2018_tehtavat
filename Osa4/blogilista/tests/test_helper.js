@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -15,15 +16,19 @@ const initialBlogs = [
   }
 ]
 
-const clearDb = async () => {
+const deleteBlogsInDb = async () => {
   await Blog.deleteMany({})
+}
+
+const deleteUsersInDb = async () => {
+  await User.deleteMany({})
 }
 
 /**
  * Seed test database with initial blogs
  * @returns {object, null} - returns saved blog documents or null if save failed
  */
-const seedDb = () => {
+const seedBlogs = () => {
   const blogDocuments = initialBlogs.map(b => new Blog(b))
 
   const savedBlogDocuments = blogDocuments.map(async blog => {
@@ -46,7 +51,8 @@ const getAllBlogsFromDb = async () => {
 
 module.exports = {
   initialBlogs,
-  clearDb,
-  seedDb,
+  deleteBlogsInDb,
+  deleteUsersInDb,
+  seedBlogs,
   getAllBlogsFromDb
 }
