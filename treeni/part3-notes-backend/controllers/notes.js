@@ -1,26 +1,22 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
-
-const formatNote = (note) => {
-  return {
-    content: note.content,
-    date: note.date,
-    important: note.important,
-    id: note._id
-  }
-}
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 notesRouter.get('/', async (req, res) => {
-  const notes = await Note.find({})
-  res.json(notes.map(formatNote))
+  const notes = await Note
+    .find({})
+    .populate('user', { username: 1, name: 1 })
+
+  res.json(notes.map(Note.format))
 })
 
 notesRouter.get('/:id', (req, res) => {
   Note
     .findById(req.params.id)
     .then(note => {
-      if (note) {
-        res.json(formatNote(note))
+      if (note) {        
+        res.json(Note.format(note))
       } else {
         res.status(404).end()
       }
@@ -31,25 +27,51 @@ notesRouter.get('/:id', (req, res) => {
     })
 })
 
+const getTokenFrom = (request) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
 notesRouter.post('/', async (request, response) => {
+  const body = request.body
+
   try {
-    const body = request.body
+    const token = getTokenFrom(request)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
 
     if (body.content === undefined) {
       return response.status(400).json({ error: 'content missing' })
     }
 
+    const user = await User.findById(body.userId)
+
     const note = new Note({
       content: body.content,
-      important: body.important || false,
-      date: new Date()
+      important: body.important === undefined ? false : body.important,
+      date: new Date(),
+      user: user._id
     })
 
     const savedNote = await note.save()
-    response.json(formatNote(savedNote))
+
+    user.notes = user.notes.concat(savedNote._id)
+    await user.save()
+
+    response.json(Note.format(savedNote))
   } catch(ex) {
-    console.log(ex)
-    response.status(500).json({ error: 'something went wrong...' })
+    if (ex.name === 'JsonWebTokenError') {
+      response.status(401).json({ error: ex.message })
+    } else {
+      console.log(ex)
+      response.status(500).json({ error: 'something went wrong...' })
+    }
   }
 })
 

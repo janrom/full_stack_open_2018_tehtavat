@@ -6,8 +6,11 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const middleware = require('./utils/middleware')
 const notesRouter = require('./controllers/notes')
+const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const config = require('./utils/config')
 
+// connect to database
 mongoose
   .connect(config.mongoUrl)
   .then(() => {
@@ -17,13 +20,18 @@ mongoose
     console.log(err)
   })
 
+// enable middlewares
 app.use(cors())
 app.use(bodyParser.json())
 app.use(express.static('build'))
 app.use(middleware.logger)
 
-app.use('/api/notes', notesRouter) // base url for note-routes
+// define routes and their controllers. controller uses route as base url
+app.use('/api/notes', notesRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
+// all routes, excluding above routes, is handled by this middleware
 app.use(middleware.error)
 
 const server = http.createServer(app)
