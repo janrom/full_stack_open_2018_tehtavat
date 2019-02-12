@@ -148,6 +148,13 @@ testaa yksittaista testia tai testiryhmaa:
 
 
 #####################################################################################################
+# SECURITY
+
+## PASSWORDS
+always use bcrypt for password hash: https://codahale.com/how-to-safely-store-a-password/
+
+
+#####################################################################################################
 # JAVASCRIPT
 
 ## THIS
